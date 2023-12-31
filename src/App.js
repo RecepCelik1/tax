@@ -41,50 +41,54 @@ function App() {
   const totalValue = globalParsedValue + taxValue
   console.log(`tax value : ${taxValue}      amount : ${totalValue}`)
   return (
-    <div className="App bg-[#282c34] h-full w-screen flex items-center flex-col"> 
+    <div className="App bg-[#282c34] h-full w-screen flex items-center flex-col">  
 
-      <div className="bg-[#e2e8f0] h-[300px] w-[750px] flex flex-col mt-[200px]"> {/*  */}
-        <h1 className="text-4xl font-mono subpixel-antialiased ml-[30px] mt-[20px]">Sales Tax Calculator</h1>
-        <div className="flex justify-between mt-[30px]">
-          <div className="ml-[20px] flex flex-col">
-            <div className="flex flex-col">
+<div className="bg-[#e2e8f0] max-w-screen-md w-full h-full flex flex-col mt-8 p-4">
+      <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4">Sales Tax Calculator</h1>
+      <div className="flex flex-col mt-4 md:flex-row md:justify-between">
+        <div className="flex flex-col">
+          <div className="flex flex-col">
               <label htmlFor ="price" className="font-semibold">Sale or purchase price<p className="text-gray-500">(required)</p></label>
-              <input className="mt-[10px] w-[325px] h-[45px] border p-3 border-gray-400 rounded-sm" id="price"
-                      onChange={handleInputChange}
+              <input className="mt-2 md:w-64 h-12 border p-3 border-gray-400 rounded-sm"
+              id="price"
+              onChange={handleInputChange}
               ></input>
             </div>
-            <div className="w-[350px] h-[45px] mt-[40px]">
+            <div className="w-64 h-12 mt-4">
               <button className="bg-[#008254] w-[325px] h-[45px]" onClick={handleButtonClick}>Calculate</button>
             </div>
           </div>
 
-          <div className="mr-[20px] font-semibold flex flex-col"><SelectState/> <p className="font-semibold text-red-600">{errorMessage}</p></div>
+          <div  className="mt-4 md:mt-0 font-semibold"><SelectState/> <p className="font-semibold text-red-600">{errorMessage}</p></div>
         </div>
-      </div>
-
-      <div> {/*  */}
-      {modal && (
+        <div>
+        {modal && (
           
-          <div className="flex flex-col w-[750px] h-[250px] bg-[#e2e8f0]">
-            <h1 className="text-4xl font-mono subpixel-antialiased ml-[30px] mt-[20px] w-full">Sales tax summary</h1>
-            <div className="flex justify-between mt-[15px]">
-            <div className="ml-[20px] flex flex-col">
+          <div className="flex flex-col mt-4">
+          <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4 w-full">Sales tax summary</h1>
+          <div className="flex flex-col md:flex-row justify-between mt-2">
+            <div className="flex flex-col ml-4">
               <h1 className="font-semibold">The state sales tax on your purchase is:</h1>
-              <p className="mt-[10px] text-blue-600 text-4xl font-bold">$ {isNaN(taxValue) ? 0 : taxValue}</p>
+              <p className="mt-2 text-blue-600 text-4xl font-bold">$ {isNaN(taxValue) ? 0 : taxValue}</p>
               <p className="text-gray-500">Note: This calculator only considers state taxes.<br></br>Local taxes may apply.</p>
             </div>
-            <div className="mr-[40px] flex flex-col">
+            <div className="flex flex-col mt-2 md:mt-0 mr-4">
               <h1 className="font-semibold">Total (after-tax) purchase price:</h1>
-              <p className="mt-[10px] text-blue-600 text-4xl font-bold">$ {isNaN(totalValue) ? 0 : totalValue}</p>
+              <p className="mt-2 text-blue-600 text-4xl font-bold">$ {isNaN(totalValue) ? 0 : totalValue}</p>
               
             </div>
             </div>
             
           </div>
         )}
-      </div>
+        </div>
         
-      <table className="bg-[#e2e8f0] border-collapse border-2 border-gray-500 w-[750px] mt-[100px]">
+
+      </div>
+
+
+        
+      <table className="bg-[#e2e8f0] border-collapse border-2 border-gray-500 w-full mt-4 md:w-auto">
             <thead>
               <tr className="h-[60px]">
                 <th className="border border-gray-500 p-2">State</th>
