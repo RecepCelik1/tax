@@ -13,6 +13,7 @@ function App() {
   const modal = useSelector(state => state.modal.modal)
 
   const stateVatValue = useSelector(state => state.states.stateSlice)
+  
   console.log("the modal situation is : " , modal)
   console.log("the state value is : ", stateVatValue)
   
@@ -26,7 +27,7 @@ function App() {
 
   const handleButtonClick = () => {
     const modalState = true
-    if(stateVatValue && stateVatValue.stateSlice !== null)
+    if (stateVatValue !== null || stateVatValue === 0)
     {
       dispatch(modalFunc(modalState))
       setErrorMessage("")
@@ -40,11 +41,11 @@ function App() {
   const totalValue = globalParsedValue + taxValue
   console.log(`tax value : ${taxValue}      amount : ${totalValue}`)
   return (
-    <div className="container mx-auto bg-[#282c34] h-full w-screen flex items-center flex-col"> 
+    <div className="App bg-[#282c34] h-full w-screen flex items-center flex-col"> 
 
-      <div className="bg-[#e2e8f0] h-[300px] w-full lg:w-[750px] flex flex-col mt-[200px]"> {/*  */}
-        <h1 className="text-4xl lg:text-5xl font-mono subpixel-antialiased ml-[30px] mt-[20px]">Sales Tax Calculator</h1>
-        <div className="flex flex-col lg:flex-row justify-between mt-[30px]">
+      <div className="bg-[#e2e8f0] h-[300px] w-[750px] flex flex-col mt-[200px]"> {/*  */}
+        <h1 className="text-4xl font-mono subpixel-antialiased ml-[30px] mt-[20px]">Sales Tax Calculator</h1>
+        <div className="flex justify-between mt-[30px]">
           <div className="ml-[20px] flex flex-col">
             <div className="flex flex-col">
               <label htmlFor ="price" className="font-semibold">Sale or purchase price<p className="text-gray-500">(required)</p></label>
@@ -83,7 +84,7 @@ function App() {
         )}
       </div>
         
-      <table className="bg-[#e2e8f0] border-collapse border-2 border-gray-500 w-full lg:w-[750px] mt-[100px]">
+      <table className="bg-[#e2e8f0] border-collapse border-2 border-gray-500 w-[750px] mt-[100px]">
             <thead>
               <tr className="h-[60px]">
                 <th className="border border-gray-500 p-2">State</th>
@@ -96,6 +97,11 @@ function App() {
                 <td className="border border-gray-500 p-2">Alabama</td>
                 <td className="border border-gray-500 p-2">4 %</td>
                 <td className="border border-gray-500 p-2">5.24 %</td>
+              </tr>
+              <tr className="h-[60px]">
+                <td className="border border-gray-500 p-2">Alask</td>
+                <td className="border border-gray-500 p-2">0 %</td>
+                <td className="border border-gray-500 p-2">1.81 %</td>
               </tr>
               <tr className="h-[60px]">
                 <td className="border border-gray-500 p-2">Arizona</td>
