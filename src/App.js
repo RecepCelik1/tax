@@ -3,89 +3,110 @@ import { modalFunc } from "./redux/modalSlice";
 import SelectState from "./components/selectState";
 import { useState } from "react";
 
-
 function App() {
+  const [globalParsedValue, setParsedValue] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [ globalParsedValue, setParsedValue ] = useState(0)
-  const [ errorMessage, setErrorMessage ] = useState("")
+  const dispatch = useDispatch();
+  const modal = useSelector((state) => state.modal.modal);
+  const stateVatValue = useSelector((state) => state.states.stateSlice);
 
-  const dispatch = useDispatch()
-  const modal = useSelector(state => state.modal.modal)
+  console.log("the modal situation is : ", modal);
+  console.log("the state value is : ", stateVatValue);
 
-  const stateVatValue = useSelector(state => state.states.stateSlice)
-  
-  console.log("the modal situation is : " , modal)
-  console.log("the state value is : ", stateVatValue)
-  
   const handleInputChange = (event) => {
-    const filteredValue = event.target.value.replace(/[^0-9,]/g, '');
-    const parsedValue = parseFloat(filteredValue.replace(',', '.'));
-    setParsedValue(parsedValue);  
-  }
-  
-  console.log("Global parsed value : ", globalParsedValue)
+    const filteredValue = event.target.value.replace(/[^0-9,]/g, "");
+    const parsedValue = parseFloat(filteredValue.replace(",", "."));
+    setParsedValue(parsedValue);
+  };
+
+  console.log("Global parsed value : ", globalParsedValue);
 
   const handleButtonClick = () => {
-    const modalState = true
-    if (stateVatValue !== null || stateVatValue === 0)
-    {
-      dispatch(modalFunc(modalState))
-      setErrorMessage("")
+    const modalState = true;
+    if (stateVatValue !== null || stateVatValue === 0) {
+      dispatch(modalFunc(modalState));
+      setErrorMessage("");
     } else {
-      setErrorMessage("This field is required !!")
+      setErrorMessage("This field is required !!");
     }
-  } 
+  };
 
-  var taxValue = globalParsedValue * (stateVatValue/100); 
+  var taxValue = globalParsedValue * (stateVatValue / 100);
   taxValue = Number(taxValue.toFixed(3));
-  const totalValue = globalParsedValue + taxValue
-  console.log(`tax value : ${taxValue}      amount : ${totalValue}`)
-  return (
-    <div className="App bg-[#282c34] h-full w-screen flex items-center flex-col">  
+  const totalValue = globalParsedValue + taxValue;
+  console.log(`tax value : ${taxValue}      amount : ${totalValue}`);
 
-<div className="bg-[#e2e8f0] max-w-screen-md w-full h-full flex flex-col mt-8 p-4">
-      <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4">Sales Tax Calculator</h1>
-      <div className="flex flex-col mt-4 md:flex-row md:justify-between">
-        <div className="flex flex-col">
+  return (
+    <div className="App bg-[#282c34] h-full w-screen flex items-center flex-col">
+      <div className="bg-[#e2e8f0] max-w-screen-md w-full h-full flex flex-col mt-8 p-4">
+        <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4">
+          Sales Tax Calculator
+        </h1>
+        <div className="flex flex-col mt-4 md:flex-row md:justify-between">
           <div className="flex flex-col">
-              <label htmlFor ="price" className="font-semibold">Sale or purchase price<p className="text-gray-500">(required)</p></label>
-              <input className="mt-2 md:w-64 h-12 border p-3 border-gray-400 rounded-sm"
-              id="price"
-              onChange={handleInputChange}
+            <div className="flex flex-col">
+              <label htmlFor="price" className="font-semibold">
+                Sale or purchase price<p className="text-gray-500">(required)</p>
+              </label>
+              <input
+                className="mt-2 w-full md:w-[325px] h-[45px] border p-3 border-gray-400 rounded-sm"
+                id="price"
+                onChange={handleInputChange}
               ></input>
             </div>
             <div className="w-64 h-12 mt-4">
-              <button className="bg-[#008254] w-[325px] h-[45px]" onClick={handleButtonClick}>Calculate</button>
+            <button
+              className={`bg-[#008254] w-full md:w-[325px] h-[45px] ${
+                globalParsedValue === null || stateVatValue === null
+                  ? "opacity-50"
+                  : ""
+              }`}
+              onClick={handleButtonClick}
+              disabled={globalParsedValue === null || stateVatValue === null}
+            >
+              Calculate
+            </button>
             </div>
           </div>
 
-          <div  className="mt-4 md:mt-0 font-semibold"><SelectState/> <p className="font-semibold text-red-600">{errorMessage}</p></div>
+          <div className="mt-4 md:mt-0 font-semibold">
+            <SelectState />{" "}
+            <p className="font-semibold text-red-600">{errorMessage}</p>
+          </div>
         </div>
         <div>
-        {modal && (
-          
-          <div className="flex flex-col mt-4">
-          <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4 w-full">Sales tax summary</h1>
-          <div className="flex flex-col md:flex-row justify-between mt-2">
-            <div className="flex flex-col ml-4">
-              <h1 className="font-semibold">The state sales tax on your purchase is:</h1>
-              <p className="mt-2 text-blue-600 text-4xl font-bold">$ {isNaN(taxValue) ? 0 : taxValue}</p>
-              <p className="text-gray-500">Note: This calculator only considers state taxes.<br></br>Local taxes may apply.</p>
+          {modal && (
+            <div className="flex flex-col mt-4">
+              <h1 className="text-4xl font-mono subpixel-antialiased ml-4 mt-4 w-full">
+                Sales tax summary
+              </h1>
+              <div className="flex flex-col md:flex-row justify-between mt-2">
+                <div className="flex flex-col ml-4">
+                  <h1 className="font-semibold">
+                    The state sales tax on your purchase is:
+                  </h1>
+                  <p className="mt-2 text-blue-600 text-4xl font-bold">
+                    $ {isNaN(taxValue) ? 0 : taxValue}
+                  </p>
+                  <p className="text-gray-500">
+                    Note: This calculator only considers state taxes.
+                    <br></br>Local taxes may apply.
+                  </p>
+                </div>
+                <div className="flex flex-col mt-2 md:mt-0 mr-4">
+                  <h1 className="font-semibold">
+                    Total (after-tax) purchase price:
+                  </h1>
+                  <p className="mt-2 text-blue-600 text-4xl font-bold">
+                    $ {isNaN(totalValue) ? 0 : totalValue}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col mt-2 md:mt-0 mr-4">
-              <h1 className="font-semibold">Total (after-tax) purchase price:</h1>
-              <p className="mt-2 text-blue-600 text-4xl font-bold">$ {isNaN(totalValue) ? 0 : totalValue}</p>
-              
-            </div>
-            </div>
-            
-          </div>
-        )}
+          )}
         </div>
-        
-
       </div>
-
 
         
       <table className="bg-[#e2e8f0] border-collapse border-2 border-gray-500 w-full mt-4 md:w-auto">
